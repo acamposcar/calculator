@@ -1,0 +1,96 @@
+:root{
+    --color: rgb(168, 168, 168);
+    --primary: hsla(39, 100%, 50%, 0.37);
+}
+
+body{
+    margin: 0px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 20px;
+    background-color: rgb(31 35 36);
+    color: var(--color)
+}
+
+
+
+#container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+#calculator{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    min-width: 300px;
+    width: 40vw;
+    max-width: 600px;
+    align-items: center;
+    padding: 20px;
+    border-radius: 20px;
+    background-color: rgb(23 25 26);
+    box-shadow: 5px 5px 5px rgba(68, 68, 68, 0.3);
+}
+
+#display{
+    display: flex;
+    flex-direction: column;
+    grid-column: span 4;
+    text-align: end;
+    padding: 10px;
+}
+
+#display-number{
+    font-size: clamp(3rem, 5vw, 4.2rem); 
+    height: clamp(4rem, 7vw, 5rem); 
+    display: flex;
+    justify-content: end;
+    align-items: end;
+
+}
+
+#display-prev{
+    font-size: 0.9rem;
+}
+
+.key{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    border-radius: 5px;
+    color: inherit;
+    font-size: inherit;
+    background-color: hsla(
+        var(--hue, 192),
+        var(--saturation, 6%),
+        calc(var(--lightness-offset, 0%) + var(--lightness, 17%)),
+        0.692);
+    border: none;
+    cursor: pointer;
+}
+
+.key:hover{
+    --lightness-offset: 10%;
+}
+
+.key:active{
+    --lightness-offset: -1%;
+}
+
+.key[data-key='equal']{
+    grid-column: span 2;
+    --hue: 39;
+    --saturation: 70%;
+    --lightness: 40%;
+}
+
+.operator{
+    border: solid thin rgba(255, 166, 0, 0.37);
+}
+
+svg#backspace{
+    fill: var(--color);
+}
