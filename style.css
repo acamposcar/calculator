@@ -52,7 +52,8 @@ body{
 }
 
 #display-prev{
-    font-size: 0.9rem;
+    font-size: clamp(0.8rem, 5vw, 1.1rem); 
+    height: clamp(1rem, 7vw, 1.5rem); 
 }
 
 .key{
@@ -87,7 +88,7 @@ body{
     --lightness: 40%;
 }
 
-.operator{
+.operator, .special{
     border: solid thin rgba(255, 166, 0, 0.37);
 }
 
