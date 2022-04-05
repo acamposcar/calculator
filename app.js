@@ -1,121 +1,111 @@
 // @ts-check
 
-// Global vars
-let currentNumber;
-let prevNumber;
-let operator;
-let result;
-let waitNumber = true;
-
-function add(a, b) {
-  return a + b;
-}
-
-function subtract(a, b) {
-  return a - b;
-}
-
-function multiply(a, b) {
-  return a * b;
-}
-
-function divide(a, b) {
-  return a / b;
-}
-
-function exponential(a, b) {
-  return a ** b;
-}
-function operate(a, b, oper) {
-  switch (oper) {
-    case '+':
-      return add(a, b);
-    case '-':
-      return subtract(a, b);
-    case 'x':
-      return multiply(a, b);
-    case '/':
-      return divide(a, b);
-    case '^':
-      return exponential(a, b);
-    case 'backspace':
-      return false;
-    default:
-      return null;
+class Calculator {
+  constructor() {
+    this.currentNumber = '';
+    this.prevNumber = '';
+    this.operand = '';
   }
-}
 
-function clearAll() {
-  currentNumber = '';
-  prevNumber = '';
-  result = '';
-  operator = null;
-}
+  clear = () => {
+    this.currentNumber = '';
+    this.prevNumber = '';
+    this.operand = '';
+    this.updateDisplay();
+  };
 
-function updateCurrentNum(num) {
-  // Limit the number of numbers that can be displayed on the screen
-  const numberLength = currentNumber.split('').length;
-  if (numberLength <= 9) {
-    currentNumber += num;
-  }
-}
-
-function updatePrevDisplay() {
-  const roundNumber = Math.round(prevNumber * 1000000) / 1000000;
-  document.querySelector('#display-prev').textContent = `${roundNumber}  ${operator || ''}`;
-}
-
-function updateCurrentDisplay() {
-  const roundNumber = Math.round(currentNumber * 1000000) / 1000000;
-  document.querySelector('#display-number').textContent = `${roundNumber}`;
-}
-
-// Operator Keys
-document.querySelectorAll('.key.operator').forEach((key) => {
-  key.addEventListener('click', () => {
-    result = '';
-    if (currentNumber || prevNumber) {
-      if (!waitNumber) {
-        if (operator) {
-          result = operate(parseFloat(prevNumber), parseFloat(currentNumber), operator);
-          currentNumber = result;
-          prevNumber = currentNumber;
-          updateCurrentDisplay();
-        } else {
-          prevNumber = currentNumber;
+  calc = (currentFloat, prevFloat) => {
+    switch (this.operand) {
+      case '+':
+        this.currentNumber = (prevFloat + currentFloat).toString();
+        break;
+      case '-':
+        this.currentNumber = (prevFloat - currentFloat).toString();
+        break;
+      case 'x':
+        this.currentNumber = (prevFloat * currentFloat).toString();
+        break;
+      case '÷':
+        if (currentFloat === 0) {
+          this.currentNumber = 'NaN';
+          return;
         }
-      }
-      waitNumber = true;
-      operator = key.dataset.key;
-      currentNumber = '';
-      if (operator === 'equal') {
-        operator = '';
-        prevNumber = '';
-        updatePrevDisplay();
-        return;
-      }
+        this.currentNumber = (prevFloat / currentFloat).toString();
+        break;
+      case '^':
+        this.currentNumber = (prevFloat ** currentFloat).toString();
+        break;
+      default:
     }
-    updatePrevDisplay();
+  };
+
+  equal = () => {
+    const currentFloat = parseFloat(this.currentNumber);
+    const prevFloat = parseFloat(this.prevNumber);
+    if (isNaN(currentFloat)) return;
+    if (isNaN(prevFloat)) return;
+    this.calc(currentFloat, prevFloat);
+    this.operand = '';
+    this.prevNumber = '';
+    this.updateDisplay();
+  };
+
+  operate = (operand) => {
+    const currentFloat = parseFloat(this.currentNumber);
+    const prevFloat = parseFloat(this.prevNumber);
+    if (isNaN(currentFloat)) return;
+
+    if (!isNaN(prevFloat)) {
+      this.calc(currentFloat, prevFloat);
+    }
+    this.operand = operand;
+    this.prevNumber = this.currentNumber;
+    this.currentNumber = '';
+    this.updateDisplay();
+  };
+
+  addDigit = (digit) => {
+    if (digit === '.' && this.currentNumber.includes('.')) return;
+
+    this.currentNumber += digit.toString();
+    this.updateDisplay();
+  };
+
+  deleteDigit = () => {
+    this.currentNumber = this.currentNumber.slice(0, -1);
+    this.updateDisplay();
+  };
+
+  updateDisplay = () => {
+    const currentDisplay = document.querySelector('#display-current');
+    const prevDisplay = document.querySelector('#display-prev');
+    currentDisplay.textContent = this.currentNumber;
+    prevDisplay.textContent = `${this.prevNumber} ${this.operand}`;
+  };
+}
+
+const calculator = new Calculator();
+
+document.querySelectorAll('[data-number]').forEach((element) => {
+  element.addEventListener('click', () => {
+    calculator.addDigit(element.textContent);
   });
 });
 
-// Number Keys
-document.querySelectorAll('.key.number').forEach((key) => {
-  key.addEventListener('click', () => {
-    waitNumber = false;
-    updateCurrentNum(key.dataset.key);
-    updateCurrentDisplay();
+document.querySelectorAll('[data-operator]').forEach((element) => {
+  element.addEventListener('click', () => {
+    calculator.operate(element.textContent);
   });
 });
 
-// AC Key
-document.querySelector('.key[data-key="AC"]').addEventListener('click', () => {
-  clearAll();
-  updateCurrentDisplay();
-  updatePrevDisplay();
+document.querySelector('[data-delete]').addEventListener('click', () => {
+  calculator.deleteDigit();
 });
 
-// Initiate
-clearAll();
-updateCurrentDisplay();
-updatePrevDisplay();
+document.querySelector('[data-clear]').addEventListener('click', () => {
+  calculator.clear();
+});
+
+document.querySelector('[data-equal]').addEventListener('click', () => {
+  calculator.equal();
+});
