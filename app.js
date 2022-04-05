@@ -14,40 +14,38 @@ class Calculator {
     this.updateDisplay();
   };
 
-  calc = (currentFloat, prevFloat) => {
-    switch (this.operand) {
-      case '+':
-        this.currentNumber = (prevFloat + currentFloat).toString();
-        break;
-      case '-':
-        this.currentNumber = (prevFloat - currentFloat).toString();
-        break;
-      case 'x':
-        this.currentNumber = (prevFloat * currentFloat).toString();
-        break;
-      case '÷':
-        if (currentFloat === 0) {
-          this.currentNumber = 'NaN';
-          return;
-        }
-        this.currentNumber = (prevFloat / currentFloat).toString();
-        break;
-      case '^':
-        this.currentNumber = (prevFloat ** currentFloat).toString();
-        break;
-      default:
-    }
-  };
-
-  equal = () => {
+  calc = () => {
+    let result;
     const currentFloat = parseFloat(this.currentNumber);
     const prevFloat = parseFloat(this.prevNumber);
     if (isNaN(currentFloat) || isNaN(prevFloat)) return;
 
-    this.calc(currentFloat, prevFloat);
+    switch (this.operand) {
+      case '+':
+        result = (prevFloat + currentFloat).toString();
+        break;
+      case '-':
+        result = (prevFloat - currentFloat).toString();
+        break;
+      case 'x':
+        result = (prevFloat * currentFloat).toString();
+        break;
+      case '÷':
+        if (currentFloat === 0) {
+          result = 'NaN';
+          return;
+        }
+        result = (prevFloat / currentFloat).toString();
+        break;
+      case '^':
+        result = (prevFloat ** currentFloat).toString();
+        break;
+      default:
+    }
 
     this.operand = '';
     this.prevNumber = '';
+    this.currentNumber = result;
     this.updateDisplay();
   };
 
@@ -57,7 +55,7 @@ class Calculator {
     if (isNaN(currentFloat)) return;
 
     if (!isNaN(prevFloat)) {
-      this.calc(currentFloat, prevFloat);
+      this.calc();
     }
     this.operand = operand;
     this.prevNumber = this.currentNumber;
@@ -108,7 +106,7 @@ document.querySelector('[data-clear]').addEventListener('click', () => {
 });
 
 document.querySelector('[data-equal]').addEventListener('click', () => {
-  calculator.equal();
+  calculator.calc();
 });
 
 /* KEYBOARD */
@@ -136,7 +134,7 @@ document.addEventListener('keydown', (event) => {
       calculator.operate('÷');
       break;
     case 'Enter':
-      calculator.equal();
+      calculator.calc();
       break;
     case 'Backspace':
       calculator.deleteDigit();
