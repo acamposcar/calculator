@@ -42,9 +42,10 @@ class Calculator {
   equal = () => {
     const currentFloat = parseFloat(this.currentNumber);
     const prevFloat = parseFloat(this.prevNumber);
-    if (isNaN(currentFloat)) return;
-    if (isNaN(prevFloat)) return;
+    if (isNaN(currentFloat) || isNaN(prevFloat)) return;
+
     this.calc(currentFloat, prevFloat);
+
     this.operand = '';
     this.prevNumber = '';
     this.updateDisplay();
