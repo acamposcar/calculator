@@ -18,6 +18,7 @@ class Calculator {
     let result;
     const currentFloat = parseFloat(this.currentNumber);
     const prevFloat = parseFloat(this.prevNumber);
+
     if (isNaN(currentFloat) || isNaN(prevFloat)) return;
 
     switch (this.operand) {
@@ -33,7 +34,7 @@ class Calculator {
       case '÷':
         if (currentFloat === 0) {
           result = 'NaN';
-          return;
+          break;
         }
         result = (prevFloat / currentFloat).toString();
         break;
