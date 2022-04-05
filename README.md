@@ -1,4 +1,6 @@
-# Calculator app
+# Calculator
+
+A simple calculator made with vanilla JS
 
 
 👉 [Live Demo](https://acamposcar.github.io/calculator/)
