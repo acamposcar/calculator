@@ -109,3 +109,41 @@ document.querySelector('[data-clear]').addEventListener('click', () => {
 document.querySelector('[data-equal]').addEventListener('click', () => {
   calculator.equal();
 });
+
+/* KEYBOARD */
+
+document.addEventListener('keydown', (event) => {
+  if (isFinite(event.key) || event.key === '.') {
+    calculator.addDigit(event.key);
+    return;
+  }
+
+  switch (event.key) {
+    case '+':
+      calculator.operate('+');
+      break;
+    case '^':
+      calculator.operate('^');
+      break;
+    case '-':
+      calculator.operate('-');
+      break;
+    case '*':
+      calculator.operate('x');
+      break;
+    case '/':
+      calculator.operate('÷');
+      break;
+    case 'Enter':
+      calculator.equal();
+      break;
+    case 'Backspace':
+      calculator.deleteDigit();
+      break;
+    case 'Delete':
+      calculator.clear();
+      break;
+    default:
+      break;
+  }
+});
