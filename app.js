@@ -8,7 +8,6 @@ class Calculator {
   }
 
   clear = () => {
-    console.log('clear');
     this.currentNumber = '';
     this.prevNumber = '';
     this.operand = '';
@@ -16,13 +15,11 @@ class Calculator {
   };
 
   calc = () => {
-    console.log('calc');
     let result;
     const currentFloat = parseFloat(this.currentNumber);
     const prevFloat = parseFloat(this.prevNumber);
 
     if (isNaN(currentFloat) || isNaN(prevFloat)) return;
-    console.log('switch');
 
     switch (this.operand) {
       case '+':
