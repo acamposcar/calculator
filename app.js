@@ -8,6 +8,7 @@ class Calculator {
   }
 
   clear = () => {
+    console.log('clear');
     this.currentNumber = '';
     this.prevNumber = '';
     this.operand = '';
@@ -15,11 +16,13 @@ class Calculator {
   };
 
   calc = () => {
+    console.log('calc');
     let result;
     const currentFloat = parseFloat(this.currentNumber);
     const prevFloat = parseFloat(this.prevNumber);
 
     if (isNaN(currentFloat) || isNaN(prevFloat)) return;
+    console.log('switch');
 
     switch (this.operand) {
       case '+':
@@ -87,26 +90,31 @@ class Calculator {
 const calculator = new Calculator();
 
 document.querySelectorAll('[data-number]').forEach((element) => {
-  element.addEventListener('click', () => {
+  element.addEventListener('click', (event) => {
+    if (event.pointerType !== 'mouse') return;
     calculator.addDigit(element.textContent);
   });
 });
 
 document.querySelectorAll('[data-operator]').forEach((element) => {
-  element.addEventListener('click', () => {
+  element.addEventListener('click', (event) => {
+    if (event.pointerType !== 'mouse') return;
     calculator.operate(element.textContent);
   });
 });
 
-document.querySelector('[data-delete]').addEventListener('click', () => {
+document.querySelector('[data-delete]').addEventListener('click', (event) => {
+  if (event.pointerType !== 'mouse') return;
   calculator.deleteDigit();
 });
 
-document.querySelector('[data-clear]').addEventListener('click', () => {
+document.querySelector('[data-clear]').addEventListener('click', (event) => {
+  if (event.pointerType !== 'mouse') return;
   calculator.clear();
 });
 
-document.querySelector('[data-equal]').addEventListener('click', () => {
+document.querySelector('[data-equal]').addEventListener('click', (event) => {
+  if (event.pointerType !== 'mouse') return;
   calculator.calc();
 });
 
